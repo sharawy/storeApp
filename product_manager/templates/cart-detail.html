@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Cart Detail</h2>
+<p>Total Amount: {{cart.total}}</p>
+		<table>
+			<thead>
+				<th>Name</th>
+				<th>Description</th>
+				<th >Quantity</th>
+			<th >Price</th>
+            <th ></th>
+			</thead>
+			<tbody>
+				{% for product in cart.products.all %}
+					<tr>
+						<td class="title">
+							{{ product.name }}
+						</td>
+						<td>
+							{{product.description}}
+						</td>
+                        <td >
+							{{product.quantity}}
+						</td>
+                        <td >
+							{{product.price}}
+						</td>
+						<td class="align-right">
+							<a href="{% url 'product-detail' product.pk %}">View</a>
+                            <form method="post" action="{% url 'cart-detail'%}">
+        {% csrf_token %}
+    <input type="hidden" name="id" value="{{product.id}}">
+                                    <input type="hidden" name="action" value="remove">
+
+        <button type="submit" >Remove</button>
+    </form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+{% endblock %}
